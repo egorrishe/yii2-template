@@ -19,6 +19,7 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'loginUrl' => ['user/default/login'],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -34,12 +35,15 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'blog/default/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                ''                           => 'blog/default/index',
+                '<_a:(about|error|contact)>' => 'blog/default/<_a>',
+                '<_a:(signup|login|logout)>' => 'user/default/<_a>',
             ],
         ],
         'assetManager' => [
