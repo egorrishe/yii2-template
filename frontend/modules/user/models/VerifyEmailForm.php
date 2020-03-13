@@ -2,7 +2,7 @@
 
 namespace frontend\modules\user\models;
 
-use common\models\User;
+use common\models\user\User;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
 
@@ -14,7 +14,7 @@ class VerifyEmailForm extends Model
     public $token;
 
     /**
-     * @var User
+     * @var \common\models\user\User
      */
     private $_user;
 

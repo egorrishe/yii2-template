@@ -2,7 +2,7 @@
 
 namespace app\modules\user\controllers;
 
-use common\models\LoginForm;
+use common\models\user\LoginForm;
 use frontend\modules\user\models\PasswordResetRequestForm;
 use frontend\modules\user\models\ResendVerificationEmailForm;
 use frontend\modules\user\models\ResetPasswordForm;
