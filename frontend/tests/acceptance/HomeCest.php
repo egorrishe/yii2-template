@@ -13,7 +13,9 @@ class HomeCest
 
         $I->seeLink('About');
         $I->click('About');
-        $I->wait(2); // wait for page to be opened
+        if (method_exists($I, 'wait')) {
+            $I->wait(3); // only for selenium
+        }
 
         $I->see('This is the About page.');
     }
