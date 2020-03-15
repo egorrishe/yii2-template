@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $res = '';
                     foreach ($model->tags as $tag) {
                         $url = ArticleSearch::url($tag);
-                        $res .= Html::a($tag->content, $url) . ' ';
+                        $res .= Html::a(Html::encode($tag->content), $url) . ' ';
                     }
 
                     return $res;
@@ -48,10 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'created_date:date',
             'updated_date:date',
-            'title',
             'description:ntext',
-            'content:ntext',
         ],
     ]) ?>
+
+    <article><?= $model->content ?></article>
 
 </div>
