@@ -4,12 +4,17 @@ namespace common\models\blog;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * ArticleSearch represents the model behind the search form of `common\models\blog\Article`.
  */
 class ArticleSearch extends Article
 {
+    /** @var string|array */
+    public $tag_id;
+
     /**
      * {@inheritdoc}
      */
@@ -17,7 +22,7 @@ class ArticleSearch extends Article
     {
         return [
             [['id', 'user_id', 'status', 'created_date', 'updated_date'], 'integer'],
-            [['title', 'description', 'content'], 'safe'],
+            [['title', 'description', 'content', 'tag_id'], 'safe'],
         ];
     }
 
@@ -56,10 +61,21 @@ class ArticleSearch extends Article
         }
 
         // grid filtering conditions
+
+        //INDEX conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'id'      => $this->id,
             'user_id' => $this->user_id,
-            'status' => $this->status,
+        ]);
+
+        if (!empty($this->tag_id)) {
+            $query->join('JOIN', 'tag2article', 'tag2article.article_id = article.id');
+            $query->andWhere(['tag_id' => $this->tag_id]);
+        }
+
+        //NUMBER conditions
+        $query->andFilterWhere([
+            'status'       => $this->status,
             'created_date' => $this->created_date,
             'updated_date' => $this->updated_date,
         ]);
@@ -69,5 +85,21 @@ class ArticleSearch extends Article
             ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @param null|array|Tag $attributes
+     *
+     * @return string
+     */
+    public static function url($attributes = null): string
+    {
+        if ($attributes instanceof Tag) {
+            $k = Html::getInputName(new self(), 'tag_id');
+            $attributes = [$k => $attributes->id];
+        }
+        $attributes[0] = '/blog/article/index';
+
+        return Url::to($attributes);
     }
 }

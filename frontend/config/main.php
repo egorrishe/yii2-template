@@ -41,7 +41,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ''                           => 'blog/article',
+                ''                           => 'blog/article/index',
                 '<_a:(about|error|contact)>' => 'blog/default/<_a>',
                 '<_a:(signup|login|logout)>' => 'user/default/<_a>',
             ],
