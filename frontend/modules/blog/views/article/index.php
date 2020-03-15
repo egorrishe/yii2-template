@@ -1,5 +1,6 @@
 <?php
 
+use kop\y2sp\ScrollPager;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
@@ -10,6 +11,7 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Articles');
 $this->params['breadcrumbs'][] = $this->title;
 
+$dataProvider->setPagination(['pageSize'=>1]);
 ?>
 <div class="article-index">
 
@@ -26,10 +28,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->title), ['view', 'id' => $model->id]);
+        'itemOptions'  => ['class' => 'item'],
+        'layout'       => "{items}\n{pager}",
+        'itemView'     => function ($model, $key, $index, $widget) {
+            $res = '';
+            $res .= '<h2>' . Html::a(Html::encode($model->title), ['view', 'id' => $model->id]) . '</h2>';
+            $res .= "<article>$model->content</article>";
+            $res .= '<hr>';
+            $res .= '<hr>';
+            $res .= '<hr>';
+
+            return $res;
         },
+        'pager' => [
+            'class' => ScrollPager::className(),
+            'enabledExtensions' => [
+                ScrollPager::EXTENSION_SPINNER,
+                ScrollPager::EXTENSION_NONE_LEFT,
+                ScrollPager::EXTENSION_PAGING,
+            ],
+        ]
     ]) ?>
 
     <?php Pjax::end(); ?>
