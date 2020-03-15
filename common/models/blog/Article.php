@@ -87,7 +87,6 @@ class Article extends \yii\db\ActiveRecord
         return new ArticleQuery(get_called_class());
     }
 
-
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
@@ -97,5 +96,13 @@ class Article extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
             ->viaTable('tag2article', ['article_id' => 'id']);
+    }
+
+    public function isCurrentUserAuthor(): bool
+    {
+        return (
+            !Yii::$app->user->isGuest &&
+            (float)Yii::$app->user->id === (float)$this->user_id
+        );
     }
 }

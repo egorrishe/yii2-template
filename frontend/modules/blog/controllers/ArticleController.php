@@ -5,6 +5,8 @@ namespace app\modules\blog\controllers;
 use Yii;
 use common\models\blog\Article;
 use common\models\blog\ArticleSearch;
+use yii\db\ExpressionInterface;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,6 +26,17 @@ class ArticleController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -84,7 +97,7 @@ class ArticleController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, ['user_id' => Yii::$app->user->id]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -104,7 +117,8 @@ class ArticleController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->findModel($id, ['user_id' => Yii::$app->user->id])
+            ->delete();
 
         return $this->redirect(['index']);
     }
@@ -113,12 +127,19 @@ class ArticleController extends Controller
      * Finds the Article model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
+     * @param string|array|ExpressionInterface $condition
      * @return Article the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id, $condition = null)
     {
-        if (($model = Article::findOne($id)) !== null) {
+        $q = Article::find()->where(['id' => $id]);
+        if (!empty($condition)) {
+            $q->andWhere($condition);
+        }
+        $model = $q->one();
+
+        if ($model) {
             return $model;
         }
 
