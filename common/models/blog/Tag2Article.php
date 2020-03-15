@@ -42,4 +42,24 @@ class Tag2Article extends \yii\db\ActiveRecord
             'article_id' => Yii::t('app', 'Article ID'),
         ];
     }
+
+
+    /**
+     * @param array $aTagId
+     *
+     * @return array
+     * @throws \yii\db\Exception
+     */
+    public static function insertMany($articleId, array $aTagId): void
+    {
+        $aParams = [];
+        foreach ($aTagId as $i => $id) {
+            $aParams[":ph_$i"] = $id;
+        }
+        $sPlaceHolders = '(:ph_a,' . implode('),(:ph_a,', array_keys($aParams)) . ')';
+        $aParams[':ph_a'] = $articleId;
+
+        $sql = "INSERT INTO tag2article (article_id, tag_id) VALUES $sPlaceHolders;";
+        self::getDb()->createCommand($sql, $aParams)->execute();
+    }
 }

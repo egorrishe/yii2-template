@@ -2,9 +2,11 @@
 
 namespace app\modules\blog\controllers;
 
+use frontend\modules\blog\models\ArticleForm;
 use Yii;
 use common\models\blog\Article;
 use common\models\blog\ArticleSearch;
+use yii\db\ActiveQuery;
 use yii\db\ExpressionInterface;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -66,7 +68,7 @@ class ArticleController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id, ArticleForm::find()),
         ]);
     }
 
@@ -77,7 +79,7 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Article();
+        $model = new ArticleForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -97,7 +99,8 @@ class ArticleController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id, ['user_id' => Yii::$app->user->id]);
+        $q = ArticleForm::find()->where(['user_id' => Yii::$app->user->id]);
+        $model = $this->findModel($id, $q);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -117,6 +120,7 @@ class ArticleController extends Controller
      */
     public function actionDelete($id)
     {
+        /** @noinspection MissedFieldInspection */
         $this->findModel($id, ['user_id' => Yii::$app->user->id])
             ->delete();
 
@@ -127,16 +131,26 @@ class ArticleController extends Controller
      * Finds the Article model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @param string|array|ExpressionInterface $condition
+     * @param string|array|ExpressionInterface|ActiveQuery $condition
      * @return Article the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id, $condition = null)
     {
-        $q = Article::find()->where(['id' => $id]);
-        if (!empty($condition)) {
-            $q->andWhere($condition);
+        if ($condition instanceof ActiveQuery) {
+            $q = $condition;
+            $condition = $q->where;
+            $q->where(['id' => $id]);
+            if (!empty($condition)) {
+                $q->andWhere($condition);
+            }
+        } else {
+            $q = Article::find()->where(['id' => $id]);
+            if (!empty($condition)) {
+                $q->andWhere($condition);
+            }
         }
+
         $model = $q->one();
 
         if ($model) {

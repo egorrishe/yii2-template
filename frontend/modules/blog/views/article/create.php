@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\blog\Article */
+/* @var $model \frontend\modules\blog\models\ArticleForm */
 
 $this->title = Yii::t('app', 'Create Article');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Articles'), 'url' => ['index']];

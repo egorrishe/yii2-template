@@ -10,17 +10,17 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "article".
  * ENGINE=MyISAM (due to performance)
  *
- * @property int $id
- * @property int $user_id
- * @property int $status
- * @property int $created_date
- * @property int $updated_date
- * @property string $title
+ * @property int         $id
+ * @property int         $user_id
+ * @property int         $status
+ * @property int         $created_date
+ * @property int         $updated_date
+ * @property string      $title
  * @property string|null $description
  * @property string|null $content
  *
- * @property User $user
- * @property Tag[] $tags
+ * @property User        $user
+ * @property Tag[]       $tags
  */
 class Article extends \yii\db\ActiveRecord
 {
@@ -46,6 +46,18 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+    public function scenarios()
+    {
+        $res = parent::scenarios();
+
+        //making 'user_id' unsafe
+        $k = array_search('user_id', $res[self::SCENARIO_DEFAULT]);
+        if (false !== $k) {
+            $res[self::SCENARIO_DEFAULT][$k] = '!user_id';
+        }
+
+        return $res;
+    }
 
     /**
      * {@inheritdoc}
@@ -53,11 +65,13 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['user_id', 'title'], 'required'],
             [['status'], 'integer'],
             [['description', 'content'], 'string'],
             [['title'], 'string', 'max' => 255],
             [['title', 'description', 'content'], 'trim'],
+
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -92,7 +106,7 @@ class Article extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function getTags()
+    public function getTags(): TagQuery
     {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
             ->viaTable('tag2article', ['article_id' => 'id']);

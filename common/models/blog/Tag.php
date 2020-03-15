@@ -32,9 +32,9 @@ class Tag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content'], 'string', 'max' => 50],
             [['content'], 'trim'],
-            [['content'], 'unique'],
+            [['content'], 'string', 'max' => 50],
+//            [['content'], 'unique'],
         ];
     }
 
@@ -75,5 +75,27 @@ class Tag extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Article::className(), ['id' => 'article_id'])
             ->viaTable('tag2article', ['tag_id' => 'id']);
+    }
+
+    /**
+     * @param array $aTag [tag1, tag2, ...]
+     *
+     * @return array
+     * @throws \yii\db\Exception
+     */
+    public static function insertMany(array $aTag): array
+    {
+        $aParams = [];
+        foreach ($aTag as $i => $tag) {
+            $aParams[":ph_$i"] = $tag;
+        }
+        $sPlaceHolders = '(' . implode('),(', array_keys($aParams)) . ')';
+        $sql = "INSERT INTO tag (content) VALUES $sPlaceHolders on DUPLICATE key UPDATE  content=content;";
+        Tag::getDb()->createCommand($sql, $aParams)->execute();
+
+        return Tag::find()
+            ->select('id')
+            ->where(['content' => $aTag])
+            ->column();
     }
 }

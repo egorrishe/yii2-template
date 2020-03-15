@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\blog\Article */
+/* @var $model \frontend\modules\blog\models\ArticleForm */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Articles'), 'url' => ['index']];
@@ -31,11 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'user_id',
-            'status',
-            'created_date',
-            'updated_date',
+            'tagList',
+            'created_date:date',
+            'updated_date:date',
             'title',
             'description:ntext',
             'content:ntext',
