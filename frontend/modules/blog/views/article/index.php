@@ -55,7 +55,7 @@ $dataProvider->setPagination(['pageSize'=>1]);
 </div>
 <?php
 $this->registerJs(<<<JS
-$('#articles-pjax').on('click', '.item article', function(){ debugger;
+$('#articles-pjax').on('click', '.item article', function(){
     $(this).parents('.item').find('h2 a').click();
 });
 JS
