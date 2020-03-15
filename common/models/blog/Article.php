@@ -3,6 +3,7 @@
 namespace common\models\blog;
 
 use common\models\user\User;
+use common\traits\models\MyIsamTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -24,6 +25,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Article extends \yii\db\ActiveRecord
 {
+    use MyIsamTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -90,6 +93,15 @@ class Article extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'content' => Yii::t('app', 'Content'),
         ];
+    }
+
+    /**
+     * @throws \yii\db\Exception
+     */
+    public function afterDelete()
+    {
+        $this->onDeleteCascade('tag2article', ['article_id' => $this->id]);
+        parent::afterDelete();
     }
 
     /**
