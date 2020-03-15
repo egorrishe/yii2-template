@@ -11,4 +11,15 @@ return [
         'updated_at' => '1402312317',
         'email' => 'nicole.paucek@schultz.info',
     ],
+    [
+        //use it only in UserCest::checkOnDeleteCascade() - else it may be deleted
+        'username'           => 'checkOnDeleteCascade',
+        'auth_key'           => '4XXdVqi3rDpa_a6JH6zqVreFxUPcUPvJ',
+        'password_hash'      => '$2y$13$d17z0w/wKC4LFwtzBcmx6up4jErQuandJqhzKGKczfWuiEhLBtQBK',
+        'email'              => 'checkOnDeleteCascade@mail.com',
+        'status'             => '10',
+        'created_at'         => '1548675330',
+        'updated_at'         => '1548675330',
+        'verification_token' => 'already_used_token_1548675330',
+    ],
 ];
