@@ -8,7 +8,7 @@ class HomeCest
 {
     public function checkHome(AcceptanceTester $I)
     {
-        $I->amOnPage(Url::toRoute('/blog/default/index'));
+        $I->amOnPage(Url::toRoute('/'));
         $I->see('My Application');
 
         $I->seeLink('About');

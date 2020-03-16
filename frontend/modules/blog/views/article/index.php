@@ -23,7 +23,7 @@ $dataProvider->setPagination(['pageSize'=>1]);
         </p>
     <?php } ?>
 
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['id'=>'articles-pjax']); ?>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= ListView::widget([
@@ -60,3 +60,5 @@ $('#articles-pjax').on('click', '.item article', function(){
 });
 JS
 );
+
+$this->registerCss('.item article {cursor:pointer}');

@@ -2,6 +2,7 @@
 
 namespace common\models\blog;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
@@ -34,6 +35,14 @@ class ArticleSearch extends Article
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+
+    public function attributeLabels()
+    {
+        return array_merge(parent::attributeLabels(), [
+            'tag_id' => Yii::t('app', 'Tag List'),
+        ]);
+    }
+
 
     /**
      * Creates data provider instance with search query applied
