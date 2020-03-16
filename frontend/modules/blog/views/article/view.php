@@ -1,7 +1,7 @@
 <?php
 
+use app\modules\blog\widgets\TagsWidget;
 use common\models\blog\Article;
-use common\models\blog\ArticleSearch;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -36,18 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tagList',
                 'value'     => function (Article $model, $widget) {
-                    $res = '';
-                    foreach ($model->tags as $tag) {
-                        $url = ArticleSearch::url($tag);
-                        $res .= Html::a(Html::encode($tag->content), $url) . ' ';
-                    }
-
-                    return $res;
+                    return TagsWidget::widget(['aTags' => $model->tags]);
                 },
                 'format' => 'raw',
             ],
-            'created_date:date',
-            'updated_date:date',
+            'created_date:datetime',
+            'updated_date:datetime',
             'description:ntext',
         ],
     ]) ?>
