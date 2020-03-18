@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ab14ff8492a2cc6b89b6573480b39a0",
+    "content-hash": "2196caaf26d390a3eed3ca102abdb5d3",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -112,7 +112,7 @@
             "version": "3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "15bc73803f76bc53b654b9fdbbbc096f56d7c03d"
             },
             "dist": {
@@ -4578,7 +4578,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "7.3.*",
+        "php": "7.2.*",
         "ext-pdo": "*"
     },
     "platform-dev": [],
