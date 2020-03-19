@@ -50,5 +50,13 @@ return [
             'linkAssets' => true,
         ],
     ],
+    'modules' => [
+        'blog' => [
+            'class' => 'app\modules\blog\Module',
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
+        ],
+    ],
     'params' => $params,
 ];
