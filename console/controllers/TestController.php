@@ -18,10 +18,15 @@ class TestController extends \yii\console\Controller
             '$aUrl'    => $aUrl,
             '$dbname'  => substr($aUrl["path"], 1),
             '$dbname_' => ltrim($aUrl['path'], '/'),
+            '\Yii::$app->db->dsn' => \Yii::$app->db->dsn,
+            '\Yii::$app->db->username' => \Yii::$app->db->username,
+            '\Yii::$app->db->password' => \Yii::$app->db->password,
         ]);
 
-        VarDumper::dump(\Yii::$app->db);
 
+        print_r(
+            \Yii::$app->db->createCommand('SHOW SCHEMAS ;')->queryColumn()
+        );
     }
 
 
