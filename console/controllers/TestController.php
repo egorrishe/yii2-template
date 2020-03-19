@@ -4,6 +4,8 @@ namespace console\controllers;
 
 
 
+use yii\helpers\VarDumper;
+
 class TestController extends \yii\console\Controller
 {
     function actionSss() {
@@ -17,6 +19,8 @@ class TestController extends \yii\console\Controller
             '$dbname'  => substr($aUrl["path"], 1),
             '$dbname_' => ltrim($aUrl['path'], '/'),
         ]);
+
+        VarDumper::dump(\Yii::$app->db);
 
     }
 
