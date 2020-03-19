@@ -65,4 +65,21 @@ return [
             'frontend/config/main-local.php',
         ],
     ],
+    'Heroku' => [
+        'path' => 'heroku',
+        'setWritable' => [
+            'backend/runtime',
+            'backend/web/assets',
+            'console/runtime',
+            'frontend/runtime',
+            'frontend/web/assets',
+        ],
+        'setExecutable' => [
+            'yii',
+        ],
+        'setCookieValidationKey' => [
+            'backend/config/main-local.php',
+            'frontend/config/main-local.php',
+        ],
+    ],
 ];

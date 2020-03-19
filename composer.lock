@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "95973975d771786b282766d5623266f1",
+    "content-hash": "2f5aa9c3efd373d3745c5d17631a544a",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -2986,6 +2986,50 @@
                 "response"
             ],
             "time": "2016-08-06T14:39:51+00:00"
+        },
+        {
+            "name": "purrweb/yii2-heroku",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PurrWeb/yii2-heroku.git",
+                "reference": "ea99076cf1f57db5f6c220ca293d83f74f33b041"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PurrWeb/yii2-heroku/zipball/ea99076cf1f57db5f6c220ca293d83f74f33b041",
+                "reference": "ea99076cf1f57db5f6c220ca293d83f74f33b041",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "purrweb\\heroku\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitriy Krista",
+                    "email": "dmitriy.krista@gmail.com"
+                }
+            ],
+            "description": "Generate yii2 environments for easy deployment on heroku",
+            "homepage": "https://github.com/PurrWeb/yii2-heroku",
+            "keywords": [
+                "deploy",
+                "extension",
+                "generator",
+                "heroku",
+                "yii2"
+            ],
+            "time": "2015-06-30T09:43:40+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
