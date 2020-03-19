@@ -10,12 +10,4 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
-    'modules' => [
-        'blog' => [
-            'class' => 'app\modules\blog\Module',
-        ],
-        'user' => [
-            'class' => 'app\modules\user\Module',
-        ],
-    ],
 ];
