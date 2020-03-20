@@ -12,6 +12,7 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 
@@ -94,8 +95,17 @@ class DefaultController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        $isLoad = $model->load(Yii::$app->request->post());
+
+        if ($isLoad && ($user = $model->signup())) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+
+            if (\Yii::$app->mailer->useFileTransport) {
+                $urlVerify  = Yii::$app->urlManager->createAbsoluteUrl(['user/default/verify-email', 'token' => $user->verification_token]);
+                $linkVerify = Html::a(Html::encode($urlVerify), $urlVerify);
+                Yii::$app->session->addFlash('success', "Follow the link below to verify your email: $linkVerify");
+            }
+
             return $this->goHome();
         }
 

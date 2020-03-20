@@ -28,7 +28,7 @@ class SignupFormTest extends \Codeception\Test\Unit
         ]);
 
         $user = $model->signup();
-        expect($user)->true();
+        expect($user)->notNull();
 
         /** @var \common\models\user\User $user */
         $user = $this->tester->grabRecord('common\models\user\User', [
