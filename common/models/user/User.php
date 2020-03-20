@@ -23,6 +23,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property integer $blog_author Is allowed to create Article
  *
  * @property Article[] $articles
  */
@@ -33,6 +34,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+
+    public const BLOG_AUTHOR_YES = 1;
+    public const BLOG_AUTHOR_NO  = 0;
 
 
     /**
@@ -61,6 +65,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['blog_author', 'boolean'],
         ];
     }
 
@@ -228,5 +233,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function getArticles()
     {
         return $this->hasMany(Article::className(), ['user_id' => 'id']);
+    }
+
+    public function isBlogAuthor()
+    {
+        return $this->blog_author == self::BLOG_AUTHOR_YES;
     }
 }
