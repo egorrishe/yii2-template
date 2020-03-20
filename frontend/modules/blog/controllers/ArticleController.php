@@ -2,6 +2,7 @@
 
 namespace app\modules\blog\controllers;
 
+use common\models\user\User;
 use frontend\modules\blog\models\ArticleForm;
 use Yii;
 use common\models\blog\Article;
@@ -10,6 +11,7 @@ use yii\db\ActiveQuery;
 use yii\db\ExpressionInterface;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -38,6 +40,7 @@ class ArticleController extends Controller
                         'actions' => ['create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
+                        'matchCallback' => $this->fnValidateAuthorAccess(),
                     ],
                 ],
             ],
@@ -158,5 +161,19 @@ class ArticleController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    private function fnValidateAuthorAccess()
+    {
+        return static function () {
+            /** @var User $user */
+            $user = Yii::$app->user->identity;
+
+            if (!$user->isBlogAuthor()) {
+                throw new ForbiddenHttpException(Yii::t('app', 'Only authorized users can manage articles. Please contact us for farther instructions.'));
+            }
+
+            return true;
+        };
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use common\models\user\User;
 use kop\y2sp\ScrollPager;
 use yii\helpers\Html;
 use yii\widgets\ListView;
@@ -12,12 +13,14 @@ $this->title = Yii::t('app', 'Articles');
 $this->params['breadcrumbs'][] = $this->title;
 
 $dataProvider->setPagination(['pageSize'=>1]);
+/** @var null|User $user */
+$user = Yii::$app->user->isGuest ? null : Yii::$app->user->identity;
 ?>
 <div class="article-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php if (!Yii::$app->user->isGuest) { ?>
+    <?php if ($user && $user->isBlogAuthor()) { ?>
         <p>
             <?= Html::a(Yii::t('app', 'Create Article'), ['create'], ['class' => 'btn btn-success']) ?>
         </p>

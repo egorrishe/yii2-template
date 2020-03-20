@@ -126,9 +126,12 @@ class Article extends \yii\db\ActiveRecord
 
     public function isCurrentUserAuthor(): bool
     {
-        return (
-            !Yii::$app->user->isGuest &&
-            (float)Yii::$app->user->id === (float)$this->user_id
-        );
+        if (Yii::$app->user->isGuest || Yii::$app->user->id != $this->user_id) {
+            return false;
+        }
+
+        /** @var User $user */
+        $user = Yii::$app->user->identity;
+        return $user->isBlogAuthor();
     }
 }
